@@ -1,5 +1,6 @@
 package com.emi.systemconfiguration;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.Dialog;
 import android.app.Notification;
@@ -24,11 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
+
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -41,7 +38,7 @@ import java.util.TreeMap;
 public class BackgroundDelayService extends Service {
     public int counter=0;
     Dialog dialog;
-    private FirebaseFirestore db;
+
 
     public String activeUser = "true";
 
@@ -53,7 +50,7 @@ public class BackgroundDelayService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        db = FirebaseFirestore.getInstance();
+       // db = FirebaseFirestore.getInstance();
 
     }
 
@@ -129,6 +126,7 @@ public class BackgroundDelayService extends Service {
         timer = new Timer();
         timerTask = new TimerTask() {
 
+            @SuppressLint("ForegroundServiceType")
             @RequiresApi(api = Build.VERSION_CODES.Q)
             public void run() {
                 Log.i("Counter reminder", "=========  "+ (counter++));
@@ -197,77 +195,8 @@ public class BackgroundDelayService extends Service {
         }
     }
 
-    private void activeDevice(){
-        String  deviceId=MainActivity.getDeviceId(getApplicationContext());
-//        RegistrationAcitivity register = new RegistrationAcitivity();
-        //   String status = register.activeUser(context);
-        //   Log.d("gdfhhjgdfhdf",status);
-
-        DocumentReference documentReference = db.collection("users").document(deviceId);
-        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (error != null) {
-                    // this method is called when error is not null
-                    // and we gt any error
-                    // in this cas we are displaying an error message.
-                    Log.d("Error is","Error found" + error);
-                    startTimer();
-                    return;
-                }
-                if (value != null && value.exists()) {
-                    Boolean customerActiveFeild = (Boolean) value.getData().get("customer_active");
-
-                    if(!customerActiveFeild){
-                        stoptimertask();
-                        Log.i("Count", "========= Stopped");
-                    }
-                    else {
-                        BackgroundDelayService = new BackgroundDelayService();
-                        mServiceIntent = new Intent(getApplicationContext(), BackgroundDelayService.getClass());
-                        if (!isMyServiceRunning(BackgroundDelayService.getClass())) {
-                            startForegroundService(mServiceIntent);
-                        }
-
-                    }
-                    Log.d("Found the"+activeUser, value.getData().get("customer_active").toString());
-                }
-            }
-        });
 
 
-//        return deviceId;
-    }
-
-    public boolean isConnected() {
-        boolean connected = false;
-        try {
-            ConnectivityManager cm = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo nInfo = cm.getActiveNetworkInfo();
-            connected = nInfo != null && nInfo.isAvailable() && nInfo.isConnected();
-            return connected;
-        } catch (Exception e) {
-            Log.e("Connectivity Exception", e.getMessage());
-        }
-        return connected;
-    }
-
-    private boolean isMyServiceRunning(Class<?> serviceClass) {
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.getName().equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
-    }
-    public static void deleteCache(Context context) {
-        try {
-            File dir = context.getCacheDir();
-            deleteDir(dir);
-        } catch (Exception e) { e.printStackTrace();}
-    }
 
     public static boolean deleteDir(File dir) {
         if (dir != null && dir.isDirectory()) {

@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.emi.systemconfiguration" />
-                  <option name="mobileSdkAppId" value="1:741955552131:android:0285173add5600672decb6" />
-                  <option name="projectId" value="emi-locker-e99c1" />
-                  <option name="projectNumber" value="741955552131" />
+                  <option name="appId" value="PLACEHOLDER" />
+                  <option name="mobileSdkAppId" value="" />
+                  <option name="projectId" value="" />
+                  <option name="projectNumber" value="" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

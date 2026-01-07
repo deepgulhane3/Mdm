@@ -78,15 +78,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.api.services.androidmanagement.v1.AndroidManagement;
 import com.google.api.services.androidmanagement.v1.model.ContactInfo;
 import com.google.api.services.androidmanagement.v1.model.Enterprise;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.messaging.FirebaseMessaging;
+
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -152,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
     private UninstallService uninstallService;
 
     Intent mServiceIntent;
-    FirebaseAuth auth;
+
 
     UserManager userManager;
 
@@ -277,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "copied", Toast.LENGTH_SHORT).show();
             }
         });
-        FirebaseMessaging.getInstance().getToken()
+       /* FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
                     public void onComplete(@NonNull Task<String> task) {
@@ -311,11 +303,11 @@ public class MainActivity extends AppCompatActivity {
                         Log.d(TAG, msg);
                         Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
-                });
+                });*/
 
 //        createNotficationchannel();
         //Firebase Istance
-        auth = FirebaseAuth.getInstance();
+
 
        /* sharedPreferences = getSharedPreferences("LockingState", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -403,11 +395,11 @@ public class MainActivity extends AppCompatActivity {
 
         Boolean isconnected = MainActivity.isConnected(getApplicationContext());
         if (isconnected) {
-            if (auth.getCurrentUser() != null) {
+           /* if (auth.getCurrentUser() != null) {
                 updateVendor();
                 startAllServices();
 
-            }
+            }*/
         }
 
 
@@ -661,34 +653,7 @@ public class MainActivity extends AppCompatActivity {
 
         // signin existing user
 
-        auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(
-                        new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(
 
-                                    @NonNull Task<AuthResult> task) {
-
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(getApplicationContext(),
-                                                    "Login successful!!",
-                                                    Toast.LENGTH_LONG)
-                                            .show();
-
-                                    startAllServices();
-                                    finish();
-
-
-                                } else {
-
-                                    // sign-in failed
-                                    Toast.makeText(getApplicationContext(),
-                                                    "Login failed!!",
-                                                    Toast.LENGTH_LONG)
-                                            .show();
-                                }
-                            }
-                        });
     }
 
     //    Permission
@@ -1131,29 +1096,7 @@ public class MainActivity extends AppCompatActivity {
         // calling sendPasswordResetEmail
         // open your email and write the new
         // password and then you can login
-        auth.sendPasswordResetEmail(emaill).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                loadingBar.dismiss();
 
-                if (task.isSuccessful()) {
-                    // if isSuccessful then done messgae will be shown
-                    // and you can change the password
-                    Toast.makeText(MainActivity.this, "Done sent", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(MainActivity.this, "Error occured", Toast.LENGTH_LONG).show();
-
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                loadingBar.dismiss();
-
-                Toast.makeText(MainActivity.this, "Error Failed", Toast.LENGTH_LONG).show();
-
-            }
-        });
     }
 
     private void addAutoStartup() {

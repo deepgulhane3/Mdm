@@ -53,15 +53,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -108,7 +100,7 @@ String datetosend;
 
     // Firebase auth
     private ProgressBar progressbar;
-    private FirebaseAuth mAuth;
+
 
     // creating variables for our edit text
     private EditText policyId, emi_amount, customer_uidEdit, customer_nameEdit, customer_contactEdit,
@@ -366,7 +358,7 @@ String datetosend;
         dateView.setText("Start Date : " + new SimpleDateFormat("dd MMMM yyyy").format(new Date()));
 
         // taking FirebaseAuth instance
-        mAuth = FirebaseAuth.getInstance();
+        //mAuth = FirebaseAuth.getInstance();
 
         // getting our instance
         // from Firebase Firestore.
@@ -617,28 +609,7 @@ String datetosend;
             return;
         }
 
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            customer_uid = MainActivity.getDeviceId(getApplicationContext());
-                            amount = emi_amount.getText().toString();
-                            addDataToFirestore(customer_uid, customer_name, customer_contact, customer_email,
-                                    customer_mobile_brand, customer_payment, customer_loan, VendorID, PolicyNo,
-                                    startDate, endDate, amount, plan, downpayment, emi_tenure, photo);
-                        } else {
-                            // Registration failed
-                            Toast.makeText(
-                                            getApplicationContext(),
-                                            "Authentication failed!!" + " Please try again later",
-                                            Toast.LENGTH_LONG)
-                                    .show();
-                            // hide the progress bar
-                            progressbar.setVisibility(View.GONE);
-                        }
-                    }
-                });
+
         registerAPI();
     }
 

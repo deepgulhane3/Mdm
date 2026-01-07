@@ -18,12 +18,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,7 +28,7 @@ import java.io.OutputStream;
 
 public class UpdateService extends Service {
     DevicePolicyManager dpm;
-    private FirebaseFirestore db;
+
     String apkversion;
     String generatedString;
 
@@ -40,7 +36,7 @@ public class UpdateService extends Service {
     public void onCreate() {
         super.onCreate();
         dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
-        db = FirebaseFirestore.getInstance();
+
     }
 
     @Override
@@ -62,32 +58,7 @@ public class UpdateService extends Service {
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             apkversion = pInfo.versionName;
 
-            DocumentReference documentReference = db.collection("update").document("sjVCd1oyiDUZDTBa04qD");
-            documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                @Override
-                public void onEvent(@javax.annotation.Nullable DocumentSnapshot documentSnapshot, @javax.annotation.Nullable FirebaseFirestoreException e) {
-                    if (e != null) {
-                        // this method is called when error is not null
-                        // and we gt any error
-                        // in this cas we are displaying an error message.
-                        Log.d("Error is", "Error found" + e);
 
-                        return;
-                    }
-                    if (documentSnapshot != null && documentSnapshot.exists()) {
-
-                        Boolean status = (Boolean) documentSnapshot.getData().get("status");
-                        String version =(String) documentSnapshot.getData().get("version");
-                        String fileUrl = (String) documentSnapshot.getData().get("url");
-                        Log.d("UpdatedRc", status.toString());
-                      //  Toast.makeText(context, "StartedStatus" + status + version + "=" + apkversion, Toast.LENGTH_SHORT).show();
-                        if(status && !apkversion.equals(version)){
-                            DownloadApk(context, fileUrl);
-                        }
-                    }
-
-                }
-            });
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -108,7 +79,7 @@ public class UpdateService extends Service {
             request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,generatedString+".apk");
             DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
             //Registering receiver in Download Manager
-            context.getApplicationContext().registerReceiver(onCompleted, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+            ContextCompat.registerReceiver(context.getApplicationContext(), onCompleted, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE), ContextCompat.RECEIVER_NOT_EXPORTED);
 
             manager.enqueue(request);
         }
@@ -167,7 +138,7 @@ public class UpdateService extends Service {
                 context,
                 sessionId,
                 new Intent(LauncherReceiver.START_INTENT),
-                0);
+                PendingIntent.FLAG_IMMUTABLE);
 //
 //        File root=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS.toString() + "/"+generatedString+".apk");
 //        root.delete();

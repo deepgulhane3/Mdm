@@ -7,6 +7,7 @@
     <uses-permission
         android:name="android.permission.DELETE_PACKAGES"
         tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATaIONS" />
     <uses-permission
         android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
         tools:ignore="ProtectedPermissions" />
@@ -129,14 +130,7 @@
             android:name=".ManageSpaceActivity"
             android:exported="false" />
 
-        <service
-            android:name=".FirebaseMessageReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
+
 
         <meta-data
             android:name="com.google.android.actions"
@@ -391,32 +385,7 @@
                     android:exported="true" />
             </intent-filter>
         </receiver>
-        <receiver
-            android:name=".UpdateReciever"
-            android:enabled="true"
-            android:exported="true"
-            android:installLocation="internalOnly">
-            <intent-filter>
-                <action
-                    android:name="android.intent.action.BOOT_COMPLETED"
-                    android:exported="true" />
-                <action
-                    android:name="android.intent.action.QUICKBOOT_POWERON"
-                    android:exported="true" />
-                <action
-                    android:name="android.intent.action.ACTION_BOOT_COMPLETED"
-                    android:exported="true" />
-                <action
-                    android:name="android.intent.action.LOCKED_BOOT_COMPLETED"
-                    android:exported="true" />
-                <action
-                    android:name="android.intent.action.ACTION_POWER_CONNECTED"
-                    android:exported="true" />
-                <action
-                    android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
-                    android:exported="true" />
-            </intent-filter>
-        </receiver>
+
         <receiver
             android:name=".LauncherReceiver"
             android:enabled="true"

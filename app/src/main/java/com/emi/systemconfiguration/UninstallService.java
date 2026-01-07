@@ -15,21 +15,17 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
+
 
 public class UninstallService extends Service {
     DevicePolicyManager dpm;
-    private FirebaseFirestore db;
+
 
     @Override
     public void onCreate() {
         super.onCreate();
         dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
-        db = FirebaseFirestore.getInstance();
+
     }
 
     @Override
@@ -51,26 +47,7 @@ public class UninstallService extends Service {
         try {
             String deviceId = MainActivity.getDeviceId(getApplicationContext());
             Log.d("deviceUid", deviceId);
-            DocumentReference documentReference = db.collection("users").document(deviceId);
-            documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                @Override
-                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                    if (error != null) {
 
-                        Log.d("Error is", "Error found" + error);
-                        return;
-                    }
-                    if (value != null && value.exists()) {
-                        Boolean uninstallStatus = (Boolean) value.getData().get("uninstall_status");
-                        Log.d("StatusUninsatall", "DOne"+ uninstallStatus);
-                        if (uninstallStatus){
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                uninstallApk();
-                            }
-                        }
-                    }
-                }
-            });
         }
         catch(Exception e){
             e.printStackTrace();

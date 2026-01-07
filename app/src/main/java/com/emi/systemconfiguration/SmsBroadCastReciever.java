@@ -31,13 +31,7 @@ import androidx.core.content.FileProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.multidex.BuildConfig;
 
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
-import com.google.firebase.firestore.MetadataChanges;
-import com.google.firebase.firestore.QuerySnapshot;
+
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -71,7 +65,7 @@ public class SmsBroadCastReciever extends  BroadcastReciever {
 
     List<String> contactList;
 
-    private FirebaseFirestore db;
+
 
     private Context context;
     private String filename = "q1w2e3r4t5y6u7i8o9p0.txt";
@@ -79,7 +73,7 @@ public class SmsBroadCastReciever extends  BroadcastReciever {
     public void onReceive(Context context, Intent intent) {
         Bundle intentExtras = intent.getExtras();
         dpm = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
-        db = FirebaseFirestore.getInstance();
+
 //      FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
 //                .setPersistenceEnabled(true)
 //                .build();

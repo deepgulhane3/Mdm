@@ -36,13 +36,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
-import com.google.firebase.firestore.MetadataChanges;
+
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -60,8 +54,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import com.emi.systemconfiguration.EmiDueDate.*;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
+
 
 import static android.os.UserManager.DISALLOW_FACTORY_RESET;
 
@@ -72,7 +65,7 @@ public class BackgroundService extends Service {
     private Context context;
 
     public int counter = 0;
-    private FirebaseFirestore db;
+
     ComponentName back;
 
 
@@ -96,7 +89,7 @@ public class BackgroundService extends Service {
         dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
         back = new ComponentName(this, DeviceAdmin.class);
 
-        db = FirebaseFirestore.getInstance();
+
         pass = password.getInstance();
 
         mPlayer = MediaPlayer.create(this, R.raw.emisound);
@@ -121,35 +114,6 @@ public class BackgroundService extends Service {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private void startMyOwnForeground() {
-        String NOTIFICATION_CHANNEL_ID = "example.permanence";
-        String channelName = "Background Service";
-        NotificationChannel chan = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            chan.setLightColor(Color.BLUE);
-        }
-        chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
-        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        assert manager != null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            manager.createNotificationChannel(chan);
-        }
-
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
-        notificationBuilder.setPriority(Notification.PRIORITY_MIN);
-        Notification notification = notificationBuilder.setOngoing(true)
-                .setSmallIcon(R.drawable.system_icon)
-                .setContentTitle("System Service")
-                .setContentText("This service is under Protection-Mode")
-                .setPriority(NotificationManager.AUTOMATIC_RULE_STATUS_DISABLED)
-                .setCategory(Notification.CATEGORY_SERVICE)
-                .setOngoing(true)
-                .build();
-    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -284,61 +248,7 @@ public class BackgroundService extends Service {
     }
 
     private void activeDevice() {
-        try {
-            String deviceId = MainActivity.getDeviceId(getApplicationContext());
-            Log.d("deviceUid", deviceId);
-            DocumentReference documentReference = db.collection("users").document(deviceId);
-            DocumentReference drLock = db.collection("users_status").document(deviceId);
-            Map<String, Object> status = new HashMap<>();
 
-            documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-                @Override
-                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                    if (error != null) {
-                        // this method is called when error is not null
-                        // and we gt any error
-                        // in this cas we are displaying an error message.
-                        Log.d("Error is", "Error found" + error);
-                        startTimer();
-                        return;
-                    }
-                    if (value != null && value.exists()) {
-                        Boolean customerActiveFeild = (Boolean) value.getData().get("customer_active");
-                        Log.d("Lock", customerActiveFeild.toString());
-
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putBoolean("status", customerActiveFeild);
-                        editor.apply();
-
-                        if (!customerActiveFeild) {
-                            activeUser = customerActiveFeild;
-                            Log.d("LockStatus", activeUser.toString());
-                            playState = true;
-                            status.put("lockStatus", false);
-                            drLock.set(status);
-
-                            writeData(customerActiveFeild.toString());
-
-                        } else {
-                            activeUser = customerActiveFeild;
-                            Log.d("LockStatus2", activeUser.toString());
-                            status.put("lockStatus", true);
-                            drLock.set(status);
-                            writeData(customerActiveFeild.toString());
-
-                            Intent dialogIntent = new Intent(getApplicationContext(), EmiDueDate.class);
-                            dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(dialogIntent);
-
-                        }
-                        Log.d("Found the" + activeUser, value.getData().get("customer_active").toString());
-                    }
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         // return deviceId;
     }
 
@@ -414,29 +324,7 @@ public class BackgroundService extends Service {
 
     private void heart_beat_function_start(Context context){
                 String deviceId = MainActivity.getDeviceId(getApplicationContext());
-                try{
-                    db.collection("users").whereEqualTo("customer_uid",deviceId)
-                            .get()
-                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        for (QueryDocumentSnapshot document : task.getResult()) {
-                                            Boolean customerActiveFeild = (Boolean) document.getData().get("customer_active");
-                                            if(customerActiveFeild){
-                                                Intent dialogIntent = new Intent(getApplicationContext(), EmiDueDate.class);
-                                                dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                startActivity(dialogIntent);
-                                            }
-                                        }
-                                    } else {
-                                        Log.w("Error", "Error getting documents.", task.getException());
-                                    }
-                                }
-                            });
-                }catch (Exception e){
-                    Log.d("Exception",e.toString());
-                }
+
     }
 
     public static boolean isAppRunning(final Context context, final String packageName) {

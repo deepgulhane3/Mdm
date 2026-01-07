@@ -11,20 +11,17 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 
 public class Script extends AppCompatActivity {
-    private FirebaseFirestore db;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        db = FirebaseFirestore.getInstance();
+        //db = FirebaseFirestore.getInstance();
 
-        db.collection("policy").whereEqualTo("employeeID", "k3raSYASQjNCfzbQUM7649Gr6ii2").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+       /* db.collection("policy").whereEqualTo("employeeID", "k3raSYASQjNCfzbQUM7649Gr6ii2").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 int counter = 0;
@@ -51,7 +48,7 @@ public class Script extends AppCompatActivity {
                     Log.d("TAG", "Error getting documents: ", task.getException());
                 }
             }
-        });
+        });*/
     }
 
 }

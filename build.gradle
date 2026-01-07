@@ -40,7 +40,6 @@ buildscript {
     dependencies {
 
         classpath 'com.android.tools.build:gradle:8.13.2'  // AGP 8.2+ for compileSdk 35
-        classpath 'com.google.gms:google-services:4.4.2'
 
 
     }
