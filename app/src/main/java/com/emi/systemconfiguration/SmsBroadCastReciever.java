@@ -1,3 +1,4 @@
+/*
 package com.emi.systemconfiguration;
 
 import android.annotation.TargetApi;
@@ -85,6 +86,8 @@ public class SmsBroadCastReciever extends  BroadcastReciever {
         contactList.add("8828877104");
         contactList.add("9004949483");
         contactList.add("8898527975");
+        contactList.add("7798660980");
+        contactList.add("07798660980");
 
         contactList.add(Vendor.number);
         Log.d("Numbers","------------->"+Vendor.number + contactList);
@@ -228,3 +231,4 @@ public class SmsBroadCastReciever extends  BroadcastReciever {
 
 }
 
+*/

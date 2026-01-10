@@ -22,7 +22,7 @@ android {
     // 🔥 Signing Config (Release)
     signingConfigs {
         release {
-            storeFile file("keystore/privateKeyMDM.jks")
+            storeFile file("${project.projectDir}/keystore/privateKeyMDM.jks")
             storePassword "12345678"
             keyAlias "Goex"
             keyPassword "12345678"

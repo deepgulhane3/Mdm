@@ -1,3 +1,4 @@
+/*
 package com.emi.systemconfiguration;
 
 import android.annotation.SuppressLint;
@@ -202,3 +203,4 @@ public class StartUpReciever extends BroadcastReceiver {
 
 }
 
+*/

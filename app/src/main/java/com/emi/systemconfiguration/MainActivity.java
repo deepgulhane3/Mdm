@@ -66,7 +66,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -86,7 +85,6 @@ import com.karumi.dexter.listener.DexterError;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.PermissionRequestErrorListener;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -113,15 +111,15 @@ public class MainActivity extends AppCompatActivity {
 
     Boolean AllPerm = true;
 
-    //    Button checkEmailBtn;
+    // Button checkEmailBtn;
     TextView permissionText;
 
-//    private FirebaseFirestore db;
+    // private FirebaseFirestore db;
 
     public static Boolean multiFound = true;
     String generatedString;
 
-    //For Permission
+    // For Permission
     private static final int CAMERA_PERMISSION_CODE = 100;
     private static final int STORAGE_PERMISSION_CODE = 101;
     private static final int ACCESS_NETWORK_STATE_CODE = 102;
@@ -129,11 +127,9 @@ public class MainActivity extends AppCompatActivity {
     private static final int ACCESS_FINE_LOCATION_CODE = 104;
     private static final int READ_PHONE_STATE_CODE = 105;
 
-
     public static final int MAKE_USER_EPHEMERAL = 1;
 
     private DownloadManager mDownloadManager;
-
 
     String IMEINumber;
     String manufacturer = android.os.Build.MANUFACTURER;
@@ -145,7 +141,6 @@ public class MainActivity extends AppCompatActivity {
 
     Intent mServiceIntent;
 
-
     UserManager userManager;
 
     EditText emailText;
@@ -153,29 +148,21 @@ public class MainActivity extends AppCompatActivity {
     TextView registerText, loginText;
     password pass;
 
-
     String MultiUser;
     String StopPassword;
 
     String PathURL;
 
-
-    String[] PERMISSIONS = {Manifest.permission.READ_CONTACTS,
-            Manifest.permission.WRITE_CONTACTS,
-            Manifest.permission.READ_SMS,
-            Manifest.permission.RECEIVE_SMS,
+    String[] PERMISSIONS = {
+            // Permissions removed for Play Protect Compliance
             Manifest.permission.CAMERA,
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.MANAGE_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.SEND_SMS,
             Manifest.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
             Manifest.permission.ACCESS_BACKGROUND_LOCATION,
-            Manifest.permission.READ_CALENDAR,
-            Manifest.permission.WRITE_CALENDAR,
             Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.READ_CALL_LOG,
             Manifest.permission.WRITE_SECURE_SETTINGS,
             Manifest.permission.WRITE_SETTINGS,
             Manifest.permission.INSTALL_PACKAGES,
@@ -186,8 +173,7 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences.Editor editor;
     private Context context;
     String token;
-//    APp install device admin
-
+    // APp install device admin
 
     public static final int MSG_DOWNLOAD_COMPLETE = 1;
     public static final int MSG_DOWNLOAD_TIMEOUT = 2;
@@ -195,40 +181,36 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int DOWNLOAD_TIMEOUT_MILLIS = 120_000;
 
-    public static final String ACTION_INSTALL_COMPLETE
-            = "com.emi.systemconfiguration.INSTALL_COMPLETE";
-
+    public static final String ACTION_INSTALL_COMPLETE = "com.emi.systemconfiguration.INSTALL_COMPLETE";
 
     String syncAPI = "http://goelectronix.in/api/app/CustomerStatusSync";
 
-    //display window if already register
+    // display window if already register
     FrameLayout mainFramelayout;
     LinearLayout registerscreenlayout;
     SessionManage session;
     Fragment fragment;
     FragmentTransaction transaction;
 
-
-
-    @SuppressLint({"WrongViewCast", "WrongThread"})
+    @SuppressLint({ "WrongViewCast", "WrongThread" })
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        //firebase push notification
+        // firebase push notification
 
-      /*  if (getIntent().hasExtra("lastpage")) {
-            if (getIntent().getStringExtra("lastpage").equalsIgnoreCase("EmiDueDate")) {
-                finish();
-                return;
-            }
-        }*/
+        /*
+         * if (getIntent().hasExtra("lastpage")) {
+         * if (getIntent().getStringExtra("lastpage").equalsIgnoreCase("EmiDueDate")) {
+         * finish();
+         * return;
+         * }
+         * }
+         */
 
-
-
-        //display window if already register
+        // display window if already register
         registerscreenlayout = findViewById(R.id.registerscreenlayout);
         mainFramelayout = findViewById(R.id.mainFramelayout);
         fragment = new RegisteredCustDetail_Fragment();
@@ -243,18 +225,17 @@ public class MainActivity extends AppCompatActivity {
             transaction.commit();
         }
 
-
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-//        Intent batterystatus = context.registerReceiver(new BroadcastReciever(),intentFilter);
-
+        // Intent batterystatus = context.registerReceiver(new
+        // BroadcastReciever(),intentFilter);
 
         SharedPreferences sharedPreferences = getSharedPreferences("LockingState", Context.MODE_PRIVATE);
-        if (sharedPreferences.getBoolean("status", false)) {
+       /* if (sharedPreferences.getBoolean("status", false)) {
             Intent dialogIntent = new Intent(this, EmiDueDate.class);
             dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(dialogIntent);
-        }
-//        db = FirebaseFirestore.getInstance();
+        }*/
+        // db = FirebaseFirestore.getInstance();
         preferences = getSharedPreferences("EMILOCKER", MODE_PRIVATE);
         editor = preferences.edit();
         permissionText = findViewById(R.id.permissionText);
@@ -269,51 +250,56 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "copied", Toast.LENGTH_SHORT).show();
             }
         });
-       /* FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (!task.isSuccessful()) {
-                            System.out.println("Fetching FCM registration token failed");
-                            return;
-                        }
+        /*
+         * FirebaseMessaging.getInstance().getToken()
+         * .addOnCompleteListener(new OnCompleteListener<String>() {
+         * 
+         * @Override
+         * public void onComplete(@NonNull Task<String> task) {
+         * if (!task.isSuccessful()) {
+         * System.out.println("Fetching FCM registration token failed");
+         * return;
+         * }
+         * 
+         * // Get new FCM registration token
+         * token = task.getResult();
+         * 
+         * // Log and toast
+         * // String msg = getString(R.string.msg_token_fmt, token);
+         * System.out.println(token);
+         * Toast.makeText(MainActivity.this, "You device registration token is :  " +
+         * token,
+         * Toast.LENGTH_SHORT).show();
+         * Log.e(TAG, "onComplete: " + token);
+         * 
+         * editor.putString("fcm_token", token);
+         * editor.commit();
+         * }
+         * });
+         * FirebaseMessaging.getInstance().subscribeToTopic("customer")
+         * .addOnCompleteListener(new OnCompleteListener<Void>() {
+         * 
+         * @Override
+         * public void onComplete(@NonNull Task<Void> task) {
+         * String msg = "Subscribed";
+         * if (!task.isSuccessful()) {
+         * msg = "Subscribe failed";
+         * }
+         * Log.d(TAG, msg);
+         * Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+         * }
+         * });
+         */
 
-                        // Get new FCM registration token
-                        token = task.getResult();
+        // createNotficationchannel();
+        // Firebase Istance
 
-                        // Log and toast
-//                        String msg = getString(R.string.msg_token_fmt, token);
-                        System.out.println(token);
-                        Toast.makeText(MainActivity.this, "You device registration token is :  " + token,
-                                Toast.LENGTH_SHORT).show();
-                        Log.e(TAG, "onComplete: " + token);
-
-                        editor.putString("fcm_token", token);
-                        editor.commit();
-                    }
-                });
-        FirebaseMessaging.getInstance().subscribeToTopic("customer")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        String msg = "Subscribed";
-                        if (!task.isSuccessful()) {
-                            msg = "Subscribe failed";
-                        }
-                        Log.d(TAG, msg);
-                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                    }
-                });*/
-
-//        createNotficationchannel();
-        //Firebase Istance
-
-
-       /* sharedPreferences = getSharedPreferences("LockingState", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("status", false);
-        editor.apply();*/
-
+        /*
+         * sharedPreferences = getSharedPreferences("LockingState", MODE_PRIVATE);
+         * SharedPreferences.Editor editor = sharedPreferences.edit();
+         * editor.putBoolean("status", false);
+         * editor.apply();
+         */
 
         ActionBar actionBar = getSupportActionBar(); // or getActionBar();
         getSupportActionBar().setTitle("Emi-Locker"); // set the top title
@@ -325,8 +311,7 @@ public class MainActivity extends AppCompatActivity {
 
         pass = password.getInstance();
 
-
-        //        Hide the textview and edittext
+        // Hide the textview and edittext
         registerText = (TextView) findViewById(R.id.registerText);
         registerText.setEnabled(true);
 
@@ -336,47 +321,37 @@ public class MainActivity extends AppCompatActivity {
             // Set DeviceAdmin Demo Receiver for active the component with different option
             mDeviceAdmin = new ComponentName(this, DeviceAdmin.class);
 
-
             if (!hasPermissions(this, PERMISSIONS)) {
 
                 for (String permission : PERMISSIONS) {
-                    boolean success = mDPM.setPermissionGrantState(mDeviceAdmin, this.getPackageName(), permission, PERMISSION_GRANT_STATE_GRANTED);
-
-                    if (!success) {
-                        Log.e(TAG, "Failed to auto grant permission to self: " + permission);
+                    try {
+                        boolean success = mDPM.setPermissionGrantState(mDeviceAdmin, this.getPackageName(), permission,
+                                PERMISSION_GRANT_STATE_GRANTED);
+                        if (!success) {
+                            Log.e(TAG, "Failed to auto grant permission to self: " + permission);
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, "Grant Permission Crash Ignored: " + e.getMessage());
                     }
                 }
             }
 
             registerText.setEnabled(true);
 
-
-
-
-            mDPM.addUserRestriction(mDeviceAdmin, DISALLOW_FACTORY_RESET);
-            mDPM.addUserRestriction(mDeviceAdmin, UserManager.DISALLOW_USB_FILE_TRANSFER);
-            mDPM.addUserRestriction(mDeviceAdmin, UserManager.DISALLOW_SAFE_BOOT);
-            mDPM.setSecureSetting(mDeviceAdmin, Settings.Secure.BACKGROUND_DATA,"1");
-            mDPM.setSecurityLoggingEnabled(mDeviceAdmin, true);
-            mDPM.retrievePreRebootSecurityLogs(mDeviceAdmin);
-            mDPM.retrieveSecurityLogs(mDeviceAdmin);
-            mDPM.wipeData(DevicePolicyManager.WIPE_RESET_PROTECTION_DATA);
-
-            mDPM.setUninstallBlocked(mDeviceAdmin, getPackageName(), true);
-            if (!mDPM.isAdminActive(mDeviceAdmin)) {
-                // try to become active
-                Log.d("note", "request for admin");
-                getDeviceAdminPermsion();
-
+            if (mDPM.isAdminActive(mDeviceAdmin)) {
+                Log.d(TAG, "Admin is active. Restrictions handled by DeviceAdminReceiver.");
+            } else {
+                Log.d(TAG, "Admin not active yet.");
             }
 
             Bundle bundle = new Bundle();
             String recoveryAccount[] = {
-                    "101251806639257169134", //elocker568-ID
+                    "101251806639257169134", // elocker568-ID
             };
 
             bundle.putStringArray("factoryResetProtectionAdmin", recoveryAccount);
-            mDPM.setApplicationRestrictions(mDeviceAdmin, "com.google.android.gms", bundle);
+            // mDPM.setApplicationRestrictions(mDeviceAdmin, "com.google.android.gms",
+            // bundle);
 
             Intent broadcastIntent = new Intent("com.google.android.gms.auth.FRP_CONFIG_CHANGED");
             broadcastIntent.setPackage("com.google.android.gms");
@@ -384,31 +359,31 @@ public class MainActivity extends AppCompatActivity {
             sendBroadcast(broadcastIntent);
 
             batteryOptimize();
-//            startAllServices();
+            // startAllServices();
 
         } catch (Exception e) {
             Log.d("Error", e.toString());
             e.printStackTrace();
         }
-//        requestPermissions();
-
+        // requestPermissions();
 
         Boolean isconnected = MainActivity.isConnected(getApplicationContext());
         if (isconnected) {
-           /* if (auth.getCurrentUser() != null) {
-                updateVendor();
-                startAllServices();
-
-            }*/
+            /*
+             * if (auth.getCurrentUser() != null) {
+             * updateVendor();
+             * startAllServices();
+             * 
+             * }
+             */
         }
 
-
-//        Stop Service
+        // Stop Service
         TextView anti = (TextView) findViewById(R.id.anti);
         anti.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-//                askPassword();
+                // askPassword();
                 return true;
             }
         });
@@ -423,17 +398,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
         CallsyncAPI();
-/*
-        try {
-            Runtime.getRuntime().exec("dpm set-device-admin --user 0 com.emi.systemconfiguration/com.emi.systemconfiguration.DeviceAdmin");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-*/
-
+        /*
+         * try {
+         * Runtime.getRuntime().
+         * exec("dpm set-device-admin --user 0 com.emi.systemconfiguration/com.emi.systemconfiguration.DeviceAdmin"
+         * );
+         * } catch (IOException e) {
+         * e.printStackTrace();
+         * }
+         */
 
     }
-
 
     private String createEnterprise(AndroidManagement androidManagementClient)
             throws IOException {
@@ -450,18 +425,15 @@ public class MainActivity extends AppCompatActivity {
         enterprise.setEnterpriseDisplayName("Example Enterprise");
         enterprise.setContactInfo(contactInfo);
 
-
-        Enterprise enterprise1 =
-                androidManagementClient
-                        .enterprises()
-                        .create(enterprise)
-                        .setProjectId("myProject")
-                        .setAgreementAccepted(true)
-                        .execute();
+        Enterprise enterprise1 = androidManagementClient
+                .enterprises()
+                .create(enterprise)
+                .setProjectId("myProject")
+                .setAgreementAccepted(true)
+                .execute();
 
         return enterprise.getName();
     }
-
 
     private void CallsyncAPI() {
 
@@ -473,103 +445,70 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             params.put("DeviceID", deviceid);
-           /* if (!BuildConfig.DEBUG) {
-                params.put("IMEINumber", telephonyManager.getImei());
-            }*/
+            /*
+             * if (!BuildConfig.DEBUG) {
+             * params.put("IMEINumber", telephonyManager.getImei());
+             * }
+             */
             params.put("FirebaseToken", newFCMtoken);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, syncAPI, params, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Toast.makeText(MainActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
-                Log.e("Call Sync API-response :", response.toString());
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("Call Sync API-error :", error.toString());
-            }
-        });
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, syncAPI, params,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Toast.makeText(MainActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
+                        Log.e("Call Sync API-response :", response.toString());
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Call Sync API-error :", error.toString());
+                    }
+                });
         Volley.newRequestQueue(getApplicationContext()).add(objectRequest);
     }
-
-    private void askPassword() {
-        getPassword();
-        String deviceId = getDeviceId(this);
-        Random r = new Random();
-        int randomNumber = 10000 + r.nextInt(90000);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Enter password to stop services");
-        final EditText passwordInput = new EditText(this);
-
-        passwordInput.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        builder.setView(passwordInput);
-
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                if (StopPassword.equals(passwordInput.getText().toString()) || passwordInput.getText().toString().equals("0852")) {
-                    Toast.makeText(getApplicationContext(), "Service Stopped clear from task Manager", Toast.LENGTH_LONG).show();
-//                    Intent myService = new Intent(getApplicationContext(), BackgroundService.class);
-//                    stopService(myService);
-//                    db.collection("users").document(deviceId).update("customer_pincode", Integer.toString(randomNumber));
-                } else {
-                    Toast.makeText(getApplicationContext(), "Wrong Password try again", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                Toast.makeText(getApplicationContext(), "Service Not Stopped", Toast.LENGTH_LONG).show();
-                dialog.cancel();
-            }
-        });
-        builder.show();
-    }
-
 
     private void getPassword() {
         Boolean connect = isConnected(getApplicationContext());
 
         if (connect) {
             String deviceId = getDeviceId(this);
-//            DocumentReference documentReference = db.collection("users").document(deviceId);
-/*
-            documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                @Override
-                public void onEvent(@androidx.annotation.Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                    if (error != null) {
-                        // this method is called when error is not null
-                        // and we gt any error
-                        // in this cas we are displaying an error message.
-                        Log.d("Error is", "Error found" + error);
-
-                        StopPassword = "69691";
-                        return;
-                    }
-                    if (value != null && value.exists()) {
-                        String pin = value.getData().get("customer_pincode").toString();
-                        Log.d("Found the", value.getData().toString());
-                        StopPassword = pin;
-
-                        return;
-
-                    }
-                }
-            });
-*/
+            // DocumentReference documentReference =
+            // db.collection("users").document(deviceId);
+            /*
+             * documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+             * 
+             * @Override
+             * public void onEvent(@androidx.annotation.Nullable DocumentSnapshot
+             * value, @Nullable FirebaseFirestoreException error) {
+             * if (error != null) {
+             * // this method is called when error is not null
+             * // and we gt any error
+             * // in this cas we are displaying an error message.
+             * Log.d("Error is", "Error found" + error);
+             * 
+             * StopPassword = "69691";
+             * return;
+             * }
+             * if (value != null && value.exists()) {
+             * String pin = value.getData().get("customer_pincode").toString();
+             * Log.d("Found the", value.getData().toString());
+             * StopPassword = pin;
+             * 
+             * return;
+             * 
+             * }
+             * }
+             * });
+             */
         } else {
             Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_SHORT).show();
             StopPassword = "69691";
         }
     }
-
 
     private void startLockTimerInit(long seconds) {
 
@@ -582,7 +521,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("Timer", "TimerTask" + diff / 1000);
 
                 pass.setLockState(false);
-                //here you can have your logic to set text to edittext
+                // here you can have your logic to set text to edittext
             }
 
             public void onFinish() {
@@ -604,30 +543,29 @@ public class MainActivity extends AppCompatActivity {
         }
         Log.i("Service status", "Not running");
 
-        //    Toast.makeText(this, "No runnng", Toast.LENGTH_LONG).show();
+        // Toast.makeText(this, "No runnng", Toast.LENGTH_LONG).show();
         return false;
     }
 
     public void getDeviceAdminPermsion() {
 
-
         Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
         intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mDeviceAdmin);
-        intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "Click on Activate button to secure your application.");
+        intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION,
+                "Click on Activate button to secure your application.");
         startActivityForResult(intent, REQUEST_CODE);
 
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mDPM.addUserRestriction(mDeviceAdmin, DISALLOW_FACTORY_RESET);
-//            mDPM.addUserRestriction(mDeviceAdmin, UserManager.DISALLOW_USB_FILE_TRANSFER);
+            // mDPM.addUserRestriction(mDeviceAdmin, DISALLOW_FACTORY_RESET);
+            // mDPM.addUserRestriction(mDeviceAdmin,
+            // UserManager.DISALLOW_USB_FILE_TRANSFER);
         }
 
     }
 
     private void loginUserAccount() {
         // show the visibility of progress bar to show loading
-        //  progressbar.setVisibility(View.VISIBLE);
-
+        // progressbar.setVisibility(View.VISIBLE);
 
         // Take the value of two edit texts in Strings
         String email, password;
@@ -637,26 +575,25 @@ public class MainActivity extends AppCompatActivity {
         // validations for input email and password
         if (TextUtils.isEmpty(email)) {
             Toast.makeText(getApplicationContext(),
-                            "Please enter email!!",
-                            Toast.LENGTH_LONG)
+                    "Please enter email!!",
+                    Toast.LENGTH_LONG)
                     .show();
             return;
         }
 
         if (TextUtils.isEmpty(password)) {
             Toast.makeText(getApplicationContext(),
-                            "Please enter password!!",
-                            Toast.LENGTH_LONG)
+                    "Please enter password!!",
+                    Toast.LENGTH_LONG)
                     .show();
             return;
         }
 
         // signin existing user
 
-
     }
 
-    //    Permission
+    // Permission
     public void readPermission() {
 
         try {
@@ -676,40 +613,45 @@ public class MainActivity extends AppCompatActivity {
 
             String deviceID = getDeviceId(this);
 
-/*
-            db.collection("policy").whereEqualTo("customerUid", deviceID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-
-                    if (task.getResult().getDocuments().size() > 0) {
-                        String vendorId;
-                        vendorId = task.getResult().getDocuments().get(0).get("vendorID").toString();
-
-
-                        db.collection("vendors").document(vendorId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
-                                String vendorNumber = task.getResult().get("contact").toString();
-                                Vendor.number = vendorNumber;
-                                Log.d("Number", "---------->" + vendorNumber);
-
-//                            Toast.makeText(getApplicationContext(),
-//                                    vendorNumber,
-//                                    Toast.LENGTH_LONG)
-//                                    .show();
-                            }
-                        });
-
-                    } else {
-
-                        Log.d("Game", "Nt fund the vendor");
-                    }
-
-                }
-            });
-*/
+            /*
+             * db.collection("policy").whereEqualTo("customerUid",
+             * deviceID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+             * {
+             * 
+             * @Override
+             * public void onComplete(@NonNull Task<QuerySnapshot> task) {
+             * 
+             * 
+             * if (task.getResult().getDocuments().size() > 0) {
+             * String vendorId;
+             * vendorId = task.getResult().getDocuments().get(0).get("vendorID").toString();
+             * 
+             * 
+             * db.collection("vendors").document(vendorId).get().addOnCompleteListener(new
+             * OnCompleteListener<DocumentSnapshot>() {
+             * 
+             * @Override
+             * public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+             * 
+             * String vendorNumber = task.getResult().get("contact").toString();
+             * Vendor.number = vendorNumber;
+             * Log.d("Number", "---------->" + vendorNumber);
+             * 
+             * // Toast.makeText(getApplicationContext(),
+             * // vendorNumber,
+             * // Toast.LENGTH_LONG)
+             * // .show();
+             * }
+             * });
+             * 
+             * } else {
+             * 
+             * Log.d("Game", "Nt fund the vendor");
+             * }
+             * 
+             * }
+             * });
+             */
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -735,7 +677,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     public static boolean hasPermissions(Context context, String... permissions) {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
             for (String permission : permissions) {
@@ -747,8 +688,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-
-    @SuppressLint({"HardwareIds", "MissingPermission"})
+    @SuppressLint({ "HardwareIds", "MissingPermission" })
     public static String getDeviceId(Context context) {
 
         String deviceId;
@@ -770,11 +710,10 @@ public class MainActivity extends AppCompatActivity {
         return deviceId;
     }
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+            @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
 
         super.onRequestPermissionsResult(requestCode,
                 permissions,
@@ -838,9 +777,8 @@ public class MainActivity extends AppCompatActivity {
                             Manifest.permission.READ_CONTACTS,
                             Manifest.permission.RECEIVE_SMS
 
-
-                            //         Manifest.permission.PACKAGE_USAGE_STATS
-                            //                Manifest.permission.REQUEST_INSTALL_PACKAGES
+                    // Manifest.permission.PACKAGE_USAGE_STATS
+                    // Manifest.permission.REQUEST_INSTALL_PACKAGES
 
                     )
                     // after adding permissions we are
@@ -851,7 +789,8 @@ public class MainActivity extends AppCompatActivity {
                             // this method is called when all permissions are granted
                             if (multiplePermissionsReport.areAllPermissionsGranted()) {
                                 // do you work now
-                                Toast.makeText(MainActivity.this, "All the permissions are granted..", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "All the permissions are granted..",
+                                        Toast.LENGTH_SHORT).show();
 
                                 registerText.setEnabled(true);
                                 permissionText.setVisibility(View.GONE);
@@ -865,7 +804,8 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         @Override
-                        public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
+                        public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list,
+                                PermissionToken permissionToken) {
                             // this method is called when user grants some
                             // permission and denies some of them.
                             permissionToken.continuePermissionRequest();
@@ -877,7 +817,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onError(DexterError error) {
                             // we are displaying a toast message for error message.
                             Toast.makeText(getApplicationContext(), "Error occurred! ", Toast.LENGTH_SHORT).show();
-//                    requestPermissions();
+                            // requestPermissions();
                         }
                     })
                     // below line is use to run the permissions
@@ -928,7 +868,6 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
-
     public static boolean isConnected(Context context) {
         boolean connected = false;
         try {
@@ -967,7 +906,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void startAllServices() {
 
-
         backgroundService = new BackgroundService();
         mServiceIntent = new Intent(getApplicationContext(), backgroundService.getClass());
         if (!isMyServiceRunning(backgroundService.getClass())) {
@@ -985,33 +923,36 @@ public class MainActivity extends AppCompatActivity {
             startService(mServiceIntent);
         }
 
-
         Toast.makeText(this, "All service started successfully don't need to login", Toast.LENGTH_SHORT).show();
-//        For hiding application
+        // For hiding application
         hideApplication();
     }
 
     public void hideApplication() {
-//        MEthod first
+        // MEthod first
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mDPM.setApplicationHidden(mDeviceAdmin, "com.emi.systemconfiguration", true);
+            // mDPM.setApplicationHidden(mDeviceAdmin, "com.emi.systemconfiguration", true);
         }
 
-
-//        MEthod two uncomment it if first wont work
-//        PackageManager p = getPackageManager();
-//        ComponentName componentName = new ComponentName(this, com.emi.systemconfiguration.MainActivity.class); // activity which is first time open in manifiest file which is declare as <category android:name="android.intent.category.LAUNCHER" />
-//        p.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+        // MEthod two uncomment it if first wont work
+        // PackageManager p = getPackageManager();
+        // ComponentName componentName = new ComponentName(this,
+        // com.emi.systemconfiguration.MainActivity.class); // activity which is first
+        // time open in manifiest file which is declare as <category
+        // android:name="android.intent.category.LAUNCHER" />
+        // p.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+        // PackageManager.DONT_KILL_APP);
     }
 
     public void registerActivity(View view) {
-//        if (AllPerm) {
+        // if (AllPerm) {
         Intent registrationIntent = new Intent(getApplicationContext(), RegistrationAcitivity.class);
         startActivityForResult(registrationIntent, REGISTER_REQUEST);
-//        } else {
-//            Toast.makeText(this, "Check Mandatory Permission Auto Start/ Self Start/ StartUp App  ", Toast.LENGTH_LONG).show();
-//
-//        }
+        // } else {
+        // Toast.makeText(this, "Check Mandatory Permission Auto Start/ Self Start/
+        // StartUp App ", Toast.LENGTH_LONG).show();
+        //
+        // }
 
     }
 
@@ -1022,8 +963,8 @@ public class MainActivity extends AppCompatActivity {
             case RESULT_OK:
                 switch (requestCode) {
                     case REGISTER_REQUEST:
-//                        transaction.replace(R.id.mainFramelayout, fragment);
-//                        transaction.commit();
+                        // transaction.replace(R.id.mainFramelayout, fragment);
+                        // transaction.commit();
                         break;
                 }
                 break;
@@ -1046,11 +987,10 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout linearLayout = new LinearLayout(this);
         final EditText emailet = new EditText(this);
 
-
         // write the email using which you registered
-//        emailet.setText("Email");
+        // emailet.setText("Email");
         emailet.setHint("Enter your Registered Email");
-//        emailet.setBackgroundColor(R.drawable.linerbg);
+        // emailet.setBackgroundColor(R.drawable.linerbg);
         emailet.setMinEms(16);
         emailet.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         emailet.setHintTextColor(getResources().getColor(R.color.colorHint));
@@ -1113,9 +1053,12 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
-                    if (passwordInput.getText().toString().equals("753951") || passwordInput.getText().toString().equals("951753") || passwordInput.getText().toString().equals("001122")) {
+                    if (passwordInput.getText().toString().equals("753951")
+                            || passwordInput.getText().toString().equals("951753")
+                            || passwordInput.getText().toString().equals("001122")) {
 
-                        Toast.makeText(getApplicationContext(), "Give Auto-Start Permission is mandatory ", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Give Auto-Start Permission is mandatory ",
+                                Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                         Uri uri = Uri.fromParts("package", getPackageName(), null);
                         intent.setData(uri);
@@ -1124,7 +1067,8 @@ public class MainActivity extends AppCompatActivity {
                         loginText.setEnabled(false);
 
                     } else {
-                        Toast.makeText(getApplicationContext(), "Wrong Secret Code Pleas Try Again", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Wrong Secret Code Pleas Try Again", Toast.LENGTH_LONG)
+                                .show();
 
                     }
                 }
@@ -1133,13 +1077,13 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
-                    Toast.makeText(getApplicationContext(), "Registration For you won't be active", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Registration For you won't be active", Toast.LENGTH_LONG)
+                            .show();
 
                     dialog.cancel();
                 }
             });
             builder.show();
-
 
         } catch (Exception e) {
             Log.e("exc", String.valueOf(e));
@@ -1170,18 +1114,17 @@ public class MainActivity extends AppCompatActivity {
             pass.setLockState(false);
             Toast.makeText(this, "Unable to find Multi User", Toast.LENGTH_SHORT).show();
 
-            //     startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS));
+            // startActivity(new
+            // Intent(android.provider.Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS));
 
             e.printStackTrace();
         }
     }
 
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         switch (event.getKeyCode()) {
-
 
             case KeyEvent.KEYCODE_MENU:
 
@@ -1215,7 +1158,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     pass.setLockState(true);
                 }
-//                context = this;
+                // context = this;
                 return true;
 
             default:
@@ -1235,19 +1178,16 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-
     public void switchUser(View v) {
         pass.setLockState(false);
         startLockTimerInit(3000);
 
         try {
 
-
             Intent intent = new Intent();
             intent.setComponent(new ComponentName("com.android.settings", MultiUser));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-
 
         } catch (Exception e) {
 
@@ -1263,9 +1203,9 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             if (mDPM.isDeviceOwnerApp(this.getPackageName())) {
                 // Device owner
-                String[] packages = {this.getPackageName()};
+                String[] packages = { this.getPackageName() };
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    mDPM.setLockTaskPackages(mDeviceAdmin, packages);
+                    // mDPM.setLockTaskPackages(mDeviceAdmin, packages);
                 }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     if (mDPM.isLockTaskPermitted(this.getPackageName())) {
@@ -1324,6 +1264,38 @@ public class MainActivity extends AppCompatActivity {
         return serialNumber;
     }
 
+    public void deRegisterDevice(View view) {
+        try {
+            if (mDPM.isDeviceOwnerApp(getPackageName())) {
+                // Open up restrictions before removing ownership
+                mDPM.clearUserRestriction(mDeviceAdmin, UserManager.DISALLOW_FACTORY_RESET);
+                mDPM.clearUserRestriction(mDeviceAdmin, UserManager.DISALLOW_USB_FILE_TRANSFER);
+                mDPM.clearUserRestriction(mDeviceAdmin, UserManager.DISALLOW_SAFE_BOOT);
+                mDPM.setUninstallBlocked(mDeviceAdmin, getPackageName(), false);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    try {
+                        // mDPM.setLockTaskPackages(mDeviceAdmin, new String[] {});
+                        stopLockTask();
+                    } catch (Exception e) {
+                        Log.e("DeRegister", "Error clearing lock task", e);
+                    }
+                }
+
+                mDPM.clearDeviceOwnerApp(getPackageName());
+                Toast.makeText(this, "Device Owner Removed", Toast.LENGTH_SHORT).show();
+            } else {
+                if (mDPM.isAdminActive(mDeviceAdmin)) {
+                    mDPM.removeActiveAdmin(mDeviceAdmin);
+                    Toast.makeText(this, "Device Admin Removed", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Not an Admin", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
 }
-
-

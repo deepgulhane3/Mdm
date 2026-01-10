@@ -97,7 +97,7 @@ class CosuConfig {
         @SuppressLint("WrongConstant") DevicePolicyManager devicePolicyManager = (DevicePolicyManager) this.mContext.getSystemService("device_policy");
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                devicePolicyManager.setLockTaskPackages(componentName, getKioskApps());
+               // devicePolicyManager.setLockTaskPackages(componentName, getKioskApps());
             }
             for (String next : this.mHideApps) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -131,7 +131,7 @@ class CosuConfig {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 devicePolicyManager.setScreenCaptureDisabled(componentName, this.mDisableScreenCapture);
             }
-            devicePolicyManager.setCameraDisabled(componentName, this.mDisableCamera);
+            //devicePolicyManager.setCameraDisabled(componentName, this.mDisableCamera);
             return true;
         } catch (SecurityException e) {
             Log.d(CosuUtils.TAG, "Exception when setting lock task packages", e);

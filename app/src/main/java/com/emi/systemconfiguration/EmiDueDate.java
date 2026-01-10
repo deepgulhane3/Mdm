@@ -141,7 +141,7 @@ public class EmiDueDate extends AppCompatActivity {
                     // Device owner
                     String[] packages = {this.getPackageName()};
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        mDPM.setLockTaskPackages(mDeviceAdmin, packages);
+                       // mDPM.setLockTaskPackages(mDeviceAdmin, packages);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                             mDPM.setLockTaskFeatures(mDeviceAdmin, DevicePolicyManager.LOCK_TASK_FEATURE_NONE);
                         }
@@ -166,7 +166,7 @@ public class EmiDueDate extends AppCompatActivity {
                     // Device owner
                     String[] packages = {this.getPackageName()};
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        mDPM.setLockTaskPackages(mDeviceAdmin, packages);
+                       // mDPM.setLockTaskPackages(mDeviceAdmin, packages);
                     }
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         if (mDPM.isLockTaskPermitted(this.getPackageName())) {
@@ -200,7 +200,7 @@ public class EmiDueDate extends AppCompatActivity {
             setUserRestriction(UserManager.DISALLOW_CONFIG_WIFI, active);
              setUserRestriction(UserManager.DISALLOW_DEBUGGING_FEATURES,active);
             setUserRestriction(UserManager.DISALLOW_NETWORK_RESET, active);
-            setUserRestriction(UserManager.DISALLOW_FACTORY_RESET, active);
+           // setUserRestriction(UserManager.DISALLOW_FACTORY_RESET, active);
             mDPM.setKeyguardDisabled(mDeviceAdmin, active);
             mDPM.setStatusBarDisabled(mDeviceAdmin, active);
 
@@ -222,7 +222,7 @@ public class EmiDueDate extends AppCompatActivity {
 
         // set this Activity as a lock task package
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mDPM.setLockTaskPackages(mDeviceAdmin, active ? new String[]{getPackageName()} : new String[]{});
+           // mDPM.setLockTaskPackages(mDeviceAdmin, active ? new String[]{getPackageName()} : new String[]{});
         }
 
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_MAIN);

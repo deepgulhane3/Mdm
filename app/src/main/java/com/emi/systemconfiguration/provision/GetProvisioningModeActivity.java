@@ -31,7 +31,8 @@ import com.emi.systemconfiguration.R;
 
 /**
  * Activity that gets launched by the
- * {@link android.app.admin.DevicePolicyManager#ACTION_GET_PROVISIONING_MODE} intent.
+ * {@link android.app.admin.DevicePolicyManager#ACTION_GET_PROVISIONING_MODE}
+ * intent.
  */
 @SuppressLint("NewApi")
 public class GetProvisioningModeActivity extends Activity {
@@ -39,9 +40,11 @@ public class GetProvisioningModeActivity extends Activity {
   @Override
   public void onCreate(Bundle icicle) {
     super.onCreate(icicle);
-    setContentView(R.layout.activity_get_provisioning_mode);
-    final LinearLayout layout = findViewById(R.id.dpc_login);
-    showRelevantProvisioningOptions(layout);
+    // Auto-select Fully Managed Device (Device Owner) immediately.
+    // This prevents "Something went wrong" due to UI waiting/errors.
+    final Intent intent = new Intent();
+    intent.putExtra(EXTRA_PROVISIONING_MODE, PROVISIONING_MODE_FULLY_MANAGED_DEVICE);
+    finishWithIntent(intent);
   }
 
   @Override
@@ -51,7 +54,7 @@ public class GetProvisioningModeActivity extends Activity {
   }
 
   private void showRelevantProvisioningOptions(ViewGroup container) {
-      showDoOption(container);
+    showDoOption(container);
   }
 
   private void showDoOption(ViewGroup container) {
