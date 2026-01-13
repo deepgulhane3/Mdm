@@ -1,5 +1,6 @@
 package com.emi.systemconfiguration;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.admin.DevicePolicyManager;
@@ -77,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Optional deregistration (debug only)
      */
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void deRegisterDevice(View view) {
         try {
             if (!isDeviceOwnerSafe()) {
@@ -85,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             mDPM.clearUserRestriction(mDeviceAdmin, UserManager.DISALLOW_USB_FILE_TRANSFER);
+            mDPM.clearUserRestriction(mDeviceAdmin, UserManager.DISALLOW_UNINSTALL_APPS);
+            mDPM.clearUserRestriction(mDeviceAdmin, UserManager.DISALLOW_FACTORY_RESET);
             mDPM.clearUserRestriction(mDeviceAdmin, UserManager.DISALLOW_SAFE_BOOT);
             mDPM.setUninstallBlocked(mDeviceAdmin, getPackageName(), false);
 
