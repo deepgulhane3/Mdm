@@ -1,4 +1,5 @@
 package com.emi.systemconfiguration;
+
 import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -34,10 +35,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -53,8 +50,6 @@ import java.util.TreeMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import com.emi.systemconfiguration.EmiDueDate.*;
-
 
 import static android.os.UserManager.DISALLOW_FACTORY_RESET;
 
@@ -67,7 +62,6 @@ public class BackgroundService extends Service {
     public int counter = 0;
 
     ComponentName back;
-
 
     public Boolean activeUser = false, userAlert = true, playState = false;
     ScheduledExecutorService es = Executors.newSingleThreadScheduledExecutor();
@@ -89,7 +83,6 @@ public class BackgroundService extends Service {
         dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
         back = new ComponentName(this, DeviceAdmin.class);
 
-
         pass = password.getInstance();
 
         mPlayer = MediaPlayer.create(this, R.raw.emisound);
@@ -101,24 +94,23 @@ public class BackgroundService extends Service {
             public void run() {
                 heart_beat_function_start(context);
             }
-        },0,2,TimeUnit.MINUTES);
+        }, 0, 2, TimeUnit.MINUTES);
 
         es.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
                 deleteCache(context);
             }
-        },0,15,TimeUnit.MINUTES);
+        }, 0, 15, TimeUnit.MINUTES);
 
         heart_beat_function_start(context);
 
     }
 
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        activeUser = sharedPreferences.getBoolean("status",false);
+        activeUser = sharedPreferences.getBoolean("status", false);
         startTimer();
 
         if (isConnected()) {
@@ -127,9 +119,9 @@ public class BackgroundService extends Service {
         } else {
             Log.i("INterent", "========= Not  Connected to Network ");
             if (activeUser) {
-                Intent dialogIntent = new Intent(getApplicationContext(), EmiDueDate.class);
-                dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(dialogIntent);
+                // Intent dialogIntent = new Intent(getApplicationContext(), EmiDueDate.class);
+                // dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                // startActivity(dialogIntent);
             }
         }
 
@@ -322,8 +314,8 @@ public class BackgroundService extends Service {
         return null;
     }
 
-    private void heart_beat_function_start(Context context){
-                String deviceId = MainActivity.getDeviceId(getApplicationContext());
+    private void heart_beat_function_start(Context context) {
+        String deviceId = DeviceIdHelper.getDeviceId(getApplicationContext());
 
     }
 
@@ -339,11 +331,14 @@ public class BackgroundService extends Service {
         }
         return false;
     }
+
     public static void deleteCache(Context context) {
         try {
             File dir = context.getCacheDir();
             deleteDir(dir);
-        } catch (Exception e) { e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static boolean deleteDir(File dir) {
@@ -356,7 +351,7 @@ public class BackgroundService extends Service {
                 }
             }
             return dir.delete();
-        } else if(dir!= null && dir.isFile()) {
+        } else if (dir != null && dir.isFile()) {
             return dir.delete();
         } else {
             return false;

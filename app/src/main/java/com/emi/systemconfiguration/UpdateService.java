@@ -20,7 +20,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -53,56 +52,57 @@ public class UpdateService extends Service {
         return null;
     }
 
-    private void updateEmiLocker(Context context, Intent intent){
+    private void updateEmiLocker(Context context, Intent intent) {
         try {
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             apkversion = pInfo.versionName;
 
-
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    private  void DownloadApk(Context context, String url){
-        try{
-//            Toast.makeText(context, "StartetdDownload", Toast.LENGTH_SHORT).show();
+    private void DownloadApk(Context context, String url) {
+        try {
+            // Toast.makeText(context, "StartetdDownload", Toast.LENGTH_SHORT).show();
             DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-            request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
+            request.setAllowedNetworkTypes(
+                    DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
             request.setTitle("Download EmiLocker");
             request.setDescription("Downloading EmiLocker");
             request.allowScanningByMediaScanner();
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
 
-            generatedString = MainActivity.getSaltString(9);
-            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,generatedString+".apk");
+            // generatedString = MainActivity.getSaltString(9);
+            generatedString = "EmiLockerUpdate" + System.currentTimeMillis();
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, generatedString + ".apk");
             DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-            //Registering receiver in Download Manager
-            ContextCompat.registerReceiver(context.getApplicationContext(), onCompleted, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE), ContextCompat.RECEIVER_NOT_EXPORTED);
+            // Registering receiver in Download Manager
+            ContextCompat.registerReceiver(context.getApplicationContext(), onCompleted,
+                    new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE), ContextCompat.RECEIVER_NOT_EXPORTED);
 
             manager.enqueue(request);
-        }
-        catch(Exception e){
-            Log.d("Error---", e+"jf");
+        } catch (Exception e) {
+            Log.d("Error---", e + "jf");
 
         }
 
     }
 
-
     BroadcastReceiver onCompleted = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            try{
+            try {
 
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                    File root=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS.toString() + "/"+generatedString+".apk");
-                    InputStream inputStream =new FileInputStream(root.getAbsolutePath());
+                    File root = Environment.getExternalStoragePublicDirectory(
+                            Environment.DIRECTORY_DOWNLOADS.toString() + "/" + generatedString + ".apk");
+                    InputStream inputStream = new FileInputStream(root.getAbsolutePath());
                     PackageInstaller packageInstaller = context.getPackageManager().getPackageInstaller();
                     int sessionId = 0;
-                    sessionId = packageInstaller.createSession(new PackageInstaller
-                            .SessionParams(PackageInstaller.SessionParams.MODE_FULL_INSTALL));
+                    sessionId = packageInstaller.createSession(
+                            new PackageInstaller.SessionParams(PackageInstaller.SessionParams.MODE_FULL_INSTALL));
 
                     PackageInstaller.Session session = packageInstaller.openSession(sessionId);
 
@@ -122,13 +122,12 @@ public class UpdateService extends Service {
                     inputStream.close();
                     out.close();
 
-                    session.commit(createIntentSender(context,sessionId));
+                    session.commit(createIntentSender(context, sessionId));
 
                 }
-            }
-            catch(Exception e){
+            } catch (Exception e) {
 
-                Log.d("errp", e+"dfhfdh"+ Environment.DIRECTORY_DOWNLOADS );
+                Log.d("errp", e + "dfhfdh" + Environment.DIRECTORY_DOWNLOADS);
             }
         }
     };
@@ -139,12 +138,13 @@ public class UpdateService extends Service {
                 sessionId,
                 new Intent(LauncherReceiver.START_INTENT),
                 PendingIntent.FLAG_IMMUTABLE);
-//
-//        File root=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS.toString() + "/"+generatedString+".apk");
-//        root.delete();
+        //
+        // File
+        // root=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS.toString()
+        // + "/"+generatedString+".apk");
+        // root.delete();
 
         return pendingIntent.getIntentSender();
     }
-
 
 }

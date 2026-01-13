@@ -12,17 +12,17 @@ public class Kisko extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if(Intent.ACTION_SCREEN_OFF.equals(intent.getAction())){
+        if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
             AppContext ctx = (AppContext) context.getApplicationContext();
             // is Kiosk Mode active?
-            if(isKioskModeActive(ctx)) {
+            if (isKioskModeActive(ctx)) {
                 wakeUpDevice(ctx);
             }
         }
 
-        Intent myIntent = new Intent(context, EmiDueDate.class);
-        myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(myIntent);
+        // Intent myIntent = new Intent(context, EmiDueDate.class);
+        // myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        // context.startActivity(myIntent);
     }
 
     private void wakeUpDevice(AppContext context) {

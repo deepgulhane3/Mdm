@@ -80,7 +80,7 @@ public class RegisteredCustDetail_Fragment extends Fragment {
 
         //get value from local database from login API
         try {
-            params.put("deviceID", MainActivity.getDeviceId(getContext()));
+            params.put("deviceID", DeviceIdHelper.getDeviceId(getContext()));
         } catch (JSONException e) {
             e.printStackTrace();
         }

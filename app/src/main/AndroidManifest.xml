@@ -1,87 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.emi.systemconfiguration">
-    <!-- Permissions for internet -->
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Network (mandatory for QR / DPC download) -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-
-
-    <!-- Wi-Fi setup during provisioning -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-
-    <!-- Boot handling after provisioning -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-
-    <!-- Foreground service (Android 9+) -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"
         tools:ignore="ForegroundServicesPolicy" />
-
-    <!-- Notifications (Android 13+) -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
+    <!-- HMDM-MATCHING PERMISSIONS -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"
+        tools:ignore="RequestInstallPackagesPolicy" />
+    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" tools:ignore="PackageVisibilityPolicy,QueryAllPackagesPermission"/>
+
+    <!-- FULL DPC PERMISSIONS -->
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_AIRPLANE_MODE" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_APPS_CONTROL" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_AUDIO_OUTPUT" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_BLUETOOTH" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_CALLS" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_CERTIFICATES" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_DEBUGGING_FEATURES" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_DISPLAY" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_FACTORY_RESET" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_FUN" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_INSTALL_UNKNOWN_SOURCES" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_LOCALE" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_LOCATION" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_LOCK_CREDENTIALS" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_MICROPHONE" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_MOBILE_NETWORK" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_MODIFY_USERS" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_NEARBY_COMMUNICATION" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_OVERRIDE_APN" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_PHYSICAL_MEDIA" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_PRINTING" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_RESET_PASSWORD" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_RESTRICT_PRIVATE_DNS" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_SAFE_BOOT" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_SCREEN_CONTENT" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_SMS" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_SYSTEM_UPDATES" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_SYSTEM_DIALOGS" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_TIME" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_USB_FILE_TRANSFER" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_VPN" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_WALLPAPER" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_WIFI" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_WINDOWS" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_WIPE_DATA" />
+
+    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
 
     <application
-        android:icon="@drawable/system_icon"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:theme="@style/AppTheme"
         android:supportsRtl="true"
-        android:testOnly="false"
-        android:theme="@style/AppTheme">
-
+        android:requestLegacyExternalStorage="true"
+        android:usesCleartextTraffic="true"
+        android:hardwareAccelerated="true"
+        tools:ignore="GoogleAppIndexingWarning">
 
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
-                <action
-                    android:name="android.intent.action.MAIN"
-                    android:exported="true" />
-
-                <category
-                    android:name="android.intent.category.LAUNCHER"
-                    android:exported="true" />
-                <category
-                    android:name="android.intent.category.HOME"
-                    android:exported="true" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".EmiDueDate"
-            android:screenOrientation="portrait"
-            android:exported="true" />
-
-        <activity
-            android:name=".AdminPolicyCompliance"
-            android:exported="true"
-            android:permission="android.permission.BIND_DEVICE_ADMIN">
-            <intent-filter>
-                <action android:name="android.app.action.ADMIN_POLICY_COMPLIANCE" />
+                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.app.action.PROVISIONING_SUCCESSFUL"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
                 <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.HOME" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".provision.GetProvisioningModeActivity"
             android:exported="true"
+            android:theme="@style/SetupWizardTheme"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
             <intent-filter>
                 <action android:name="android.app.action.GET_PROVISIONING_MODE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".provision.ProvisioningSuccessActivity"
+            android:name=".AdminPolicyComplianceActivity"
             android:exported="true"
+            android:theme="@style/SetupWizardTheme"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
             <intent-filter>
-                <action android:name="android.app.action.PROVISIONING_SUCCESSFUL" />
+                <action android:name="android.app.action.ADMIN_POLICY_COMPLIANCE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
 
         <receiver
             android:name=".DeviceAdmin"
@@ -93,12 +114,9 @@
                 android:resource="@xml/device_admin" />
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+                <action android:name="android.app.action.PROFILE_PROVISIONING_COMPLETE" />
             </intent-filter>
         </receiver>
 
-
-
-
     </application>
-
 </manifest>

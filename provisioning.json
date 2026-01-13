@@ -1,8 +1,12 @@
 {
     "android.app.extra.PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME": "com.emi.systemconfiguration/com.emi.systemconfiguration.DeviceAdmin",
-    "android.app.extra.PROVISIONING_DEVICE_ADMIN_SIGNATURE_CHECKSUM": "gTh6pfIKc2rE0v3bK36WCvcMvVHoKrF1QMM7BdRbqkI",
-    "android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_CHECKSUM": "7SN-9gya1mlCvhuMwVCC69L-C4KR-NkOQob70XbyTbs",
-    "android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_DOWNLOAD_LOCATION": "https://ipca.globalspace.co.in/vodoclm/upload/app-release2.apk",
+    "android.app.extra.PROVISIONING_DEVICE_ADMIN_SIGNATURE_CHECKSUM": "tF-EF3w-9dORXyJCgFckz5WV_N_QoRVl_JXmL0ysjC0",
+    "android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_CHECKSUM": "M4-bKKlpL7DPcoWXRCyxHcV6GIditrk3MCujSBidm4E",
+    "android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_DOWNLOAD_LOCATION": "https://ipca.globalspace.co.in/vodoclm/upload/app-release3.apk",
+    "android.app.extra.PROVISIONING_LEAVE_ALL_SYSTEM_APPS_ENABLED": true,
     "android.app.extra.PROVISIONING_SKIP_ENCRYPTION": true,
-    "android.app.extra.PROVISIONING_LEAVE_ALL_SYSTEM_APPS_ENABLED": true
+    "android.app.extra.PROVISIONING_ADMIN_EXTRAS_BUNDLE": {
+        "com.emi.systemconfiguration.MODE": "device_owner",
+        "com.emi.systemconfiguration.EXTRA_1": "configured"
+    }
 }

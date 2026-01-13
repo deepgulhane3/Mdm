@@ -7,29 +7,50 @@ plugins {
 android {
 
     namespace "com.emi.systemconfiguration"
-    compileSdk 35
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.emi.systemconfiguration"
-        minSdkVersion 28
+        minSdkVersion 21  // HMDM uses 16
         targetSdkVersion 34
         versionCode 1
         versionName "1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+
+        // HMDM Configuration Fields
+        buildConfigField("String", "BASE_URL", "\"https://g-mdm.globalspace.in\"")
+        buildConfigField("String", "SECONDARY_BASE_URL", "\"https://g-mdm.globalspace.in\"")
+        buildConfigField("String", "SERVER_PROJECT", "\"\"")
+        buildConfigField("String", "DEVICE_ID_CHOICE", "\"user\"")
+        buildConfigField("Boolean", "ENABLE_PUSH", "true")
+        buildConfigField("Integer", "MQTT_PORT", "31000")
+        buildConfigField("Boolean", "SYSTEM_PRIVILEGES", "false")
+        buildConfigField("Boolean", "TRUST_ANY_CERTIFICATE", "false")
+        buildConfigField("String", "REQUEST_SIGNATURE", "\"changeme-C3z9vi54\"")
+        buildConfigField("Boolean", "CHECK_SIGNATURE", "false")
+        buildConfigField("Boolean", "ANR_WATCHDOG", "false")
+        buildConfigField("Boolean", "REQUEST_SERVER_URL", "true")
+        buildConfigField("Boolean", "DEVICE_ADMIN_DEBUG", "false")
+        buildConfigField("Boolean", "ENABLE_KIOSK_WITHOUT_OVERLAYS", "false")
+        buildConfigField("Boolean", "MQTT_SERVICE_FOREGROUND", "true")
+        buildConfigField("Boolean", "SET_DEFAULT_LAUNCHER_EARLY", "false")
+        buildConfigField("Boolean", "SELECTED_ITEM_BY_CLICK", "false")
+        buildConfigField("Boolean", "DISABLE_ORIENTATION_LOCK", "false")
+        buildConfigField("String", "LIBRARY_API_KEY", "\"changeme-8gzk321W\"")
+        buildConfigField("Boolean", "USE_ACCESSIBILITY", "false")
     }
 
     // 🔥 Signing Config (Release)
     signingConfigs {
         release {
-            storeFile file("${project.projectDir}/keystore/privateKeyMDM.jks")
-            storePassword "12345678"
-            keyAlias "Goex"
-            keyPassword "12345678"
+            storeFile file("${project.projectDir}/keystore/fresh_identity.jks")
+            storePassword "123456"
+            keyAlias "fresh_alias"
+            keyPassword "123456"
 
-            enableV1Signing true  // REQUIRED for device-owner provisioning
+            enableV1Signing true
             enableV2Signing true
-
         }
     }
 
@@ -37,8 +58,6 @@ android {
         release {
             signingConfig signingConfigs.release
             minifyEnabled false
-
-            // Must use classic APK packaging or V1 won't activate
             packaging {
                 jniLibs.useLegacyPackaging = true
             }
@@ -46,17 +65,14 @@ android {
     }
 
     packaging {
-        resources.excludes += ["META-INF/DEPENDENCIES"]
+        resources.excludes += ["META-INF/DEPENDENCIES", "META-INF/LICENSE", "META-INF/NOTICE"]
     }
 
     buildFeatures {
         viewBinding true
+        buildConfig = true // Required for buildConfigFields
     }
 }
-
-
-
-
 
 // Optional – generates report on build
 tasks.withType(com.android.build.gradle.tasks.PackageAndroidArtifact) {
@@ -64,60 +80,32 @@ tasks.withType(com.android.build.gradle.tasks.PackageAndroidArtifact) {
 }
 
 
-
-configurations.all {
-    exclude group: "com.google.firebase", module: "firebase-sessions"
-
-}
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.2.0-alpha13'
-
     implementation 'androidx.activity:activity:1.8.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
-    // Butter Knife
-    /* implementation 'com.jakewharton:butterknife:10.2.3'
-     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'*/
-
-    // implementation 'com.kevalpatel2106:passcodeview:2.0.0'
-
     implementation 'androidx.multidex:multidex:2.0.1'
-    implementation 'com.karumi:dexter:6.2.3'
     implementation 'androidx.work:work-runtime:2.9.0'
 
-    //Libraries
+    // Libraries
     implementation 'com.google.android.material:material:1.10.0'
-    implementation 'com.google.android.gms:play-services-auth:20.7.0'
-    implementation 'com.google.android.gms:play-services-location:21.0.1'
-
-
-    //messsage api
-    implementation 'com.google.android.gms:play-services-auth-api-phone:18.0.2'
-
     implementation "androidx.preference:preference:1.1.1"
-
-//    implementation platform('com.google.firebase:firebase-bom:28.1.0')
-//    implementation 'com.google.firebase:firebase-analytics'
-
-    implementation 'de.hdodenhof:circleimageview:3.1.0' // circle imageview
-
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.android.volley:volley:1.2.1'
+    
+    // QR / Scanning (Matched from HMDM)
+    implementation('com.journeyapps:zxing-android-embedded:4.1.0') { transitive = false }
+    implementation 'com.google.zxing:core:3.3.0'
 
-    //glide
+    // Glide
     implementation 'com.github.bumptech.glide:glide:4.13.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
-
-    implementation 'com.google.apis:google-api-services-androidmanagement:v1-rev20211122-1.32.1'
-
-
-
-
 }
 
 
