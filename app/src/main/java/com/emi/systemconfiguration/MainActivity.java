@@ -63,8 +63,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         try {
-            mDPM.addUserRestriction(mDeviceAdmin, UserManager.DISALLOW_USB_FILE_TRANSFER);
-            mDPM.addUserRestriction(mDeviceAdmin, UserManager.DISALLOW_SAFE_BOOT);
+            /*mDPM.addUserRestriction(mDeviceAdmin, UserManager.DISALLOW_USB_FILE_TRANSFER);
+            mDPM.addUserRestriction(mDeviceAdmin, UserManager.DISALLOW_SAFE_BOOT);*/
+            mDPM.clearUserRestriction(mDeviceAdmin, UserManager.DISALLOW_UNINSTALL_APPS);
+            mDPM.clearUserRestriction(mDeviceAdmin, UserManager.DISALLOW_FACTORY_RESET);
+
             mDPM.setUninstallBlocked(mDeviceAdmin, getPackageName(), true);
 
             Log.i(TAG, "Restrictions applied successfully");
